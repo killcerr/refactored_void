@@ -4,10 +4,10 @@
 namespace void_plugin {
 namespace config {
 namespace v1 {
-struct {
+struct Config {
     int              version    = 1;
     std::vector<int> dimensions = {};
-} static config; // global config
+} extern config; // global config
 } // namespace v1
 } // namespace config
 } // namespace void_plugin

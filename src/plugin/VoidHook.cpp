@@ -18,7 +18,10 @@ FILE_LOGGER;
 
 LL_STATIC_HOOK(DecorateHook, HookPriority::Normal, "?decorate@BiomeDecorationSystem@@YAXAEAVLevelChunk@@AEAVBlockSource@@AEAVRandom@@AEAV?$vector@PEBVBiome@@V?$allocator@PEBVBiome@@@std@@@std@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@6@AEBVIPreliminarySurfaceProvider@@@Z", void, class LevelChunk& lc, class BlockSource& source, class Random& random, std::vector<class Biome const*>& biomes, std::string const& pass, class IPreliminarySurfaceProvider const& provider) {
     // origin(lc, source, random, biomes, pass, provider);
-    logger.info("{}", tools::in(lc.getDimension().getDimensionId(), void_plugin::config::v1::config.dimensions));
+    // for (auto v : ::void_plugin::config::v1::config.dimensions) {
+    //     logger.info("{}", v);
+    // }
+    // logger.info("{}", tools::in(lc.getDimension().getDimensionId(), void_plugin::config::v1::config.dimensions));
     if (tools::in(lc.getDimension().getDimensionId(), void_plugin::config::v1::config.dimensions) && pass == "first_pass") {
         for (short x = 0; x < 16; x++)
             for (short y = lc.getMinY(); y < lc.getMaxY(); y++)
@@ -36,6 +39,8 @@ void enableHook() { DecorateHook::hook(); }
 } // namespace void_plugin
 
 auto _ = []() -> int {
-    void_plugin::VoidPlugin::addInitFunction(void_plugin::void_hook::enableHook);
+    void_plugin::VoidPlugin::addInitFunction([] { void_plugin::void_hook::enableHook(); });
     return 0;
 }();
+
+// LL_AUTO_TYPE_INSTANCE_HOOK(T, HookPriority::Normal, LevelChunk, "?getHeightmap@LevelChunk@@QEBAFAEBVChunkBlockPos@@@Z", short, ChunkBlockPos& pos) { return this->getMinY(); }
